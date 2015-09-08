@@ -10,13 +10,13 @@ tokens = (
     'DIVIDE',
     'LPAREN',
     'RPAREN',
-    'WHITESPACE',
-    'COMMENT',
     'ID',
     'EQUALS',
     'FLOAT_LITERAL',
 )
 
+if __name__ == '__main__':
+    tokens += ('WHITESPACE', 'COMMENT',)
 
 # outputs that don't require a label
 unnamed_output = (
@@ -30,6 +30,13 @@ unnamed_output = (
 )
 
 # Regular expression rules for simple tokens
+if __name__ == '__main__':
+    t_COMMENT = r'(//.*|/\*([\w\s]|\n)*\*/)'
+    t_WHITESPACE = r'\s+'
+else:
+    t_ignore_COMMENT = r'(//.*|/\*([\w\s]|\n)*\*/)'
+    t_ignore_WHITESPACE = r'\s+'
+
 t_PLUS = r'\@'
 t_MINUS = r'\$'
 t_TIMES = r'\#'
@@ -38,8 +45,6 @@ t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_EQUALS = r'='
 t_ID = r'[_a-zA-Z][a-zA-Z0-9]*'
-t_WHITESPACE = r'\s+'
-t_COMMENT = r'(//.*|/\*([\w\s]|\n)*\*/)'
 t_FLOAT_LITERAL = r'[-]?(\d*[.eE])?[-]?\d+'
 
 
