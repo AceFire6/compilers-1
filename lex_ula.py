@@ -15,6 +15,7 @@ tokens = (
     'FLOAT_LITERAL',
 )
 
+# If this module is run, these are added to the list of tokens.
 if __name__ == '__main__':
     tokens += ('WHITESPACE', 'COMMENT',)
 
@@ -29,11 +30,12 @@ unnamed_output = (
     'EQUALS',
 )
 
-# Regular expression rules for simple tokens
+# If this module is run, these are needed as the appropriate tokens were
+# added to the token list.
 if __name__ == '__main__':
     t_COMMENT = r'(//.*|/\*([\w\s]|\n)*\*/)'
     t_WHITESPACE = r'\s+'
-else:
+else:  # If it was imported, comments and whitespace need to not be lexed.
     t_ignore_COMMENT = r'(//.*|/\*([\w\s]|\n)*\*/)'
     t_ignore_WHITESPACE = r'\s+'
 
@@ -83,4 +85,3 @@ if __name__ == '__main__':
         print('No ula file specified!')
     else:
         lex_file(ula_file)
-
