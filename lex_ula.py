@@ -59,16 +59,20 @@ def t_error(t):
 def lex_file(file_name):
     with open(file_name) as open_file:
         lexer.input(open_file.read())
+    with open(file_name.replace('.ula', '.tkn'), 'w') as open_file:
         while True:
             token = lexer.token()
             if not token:
                 break
             if token.type in ('WHITESPACE', 'COMMENT'):
-                print token.type
+                print(token.type)
+                open_file.write(token.type + '\n')
             elif token.type in unnamed_output:
-                print token.value
+                print(token.value)
+                open_file.write(token.value + '\n')
             else:
-                print '%s,%s' % (token.type, token.value)
+                print('%s,%s' % (token.type, token.value))
+                open_file.write('%s,%s\n' % (token.type, token.value))
 
 lexer = lex.lex()
 
@@ -76,7 +80,7 @@ if __name__ == '__main__':
     ula_file = sys.argv[-1]
     # Check for argument
     if ula_file == sys.argv[0]:
-        print 'No ula file specified!'
+        print('No ula file specified!')
     else:
         lex_file(ula_file)
 

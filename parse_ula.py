@@ -70,19 +70,20 @@ def p_factor_expr(p):
 
 # Error rule for syntax errors
 def p_error(p):
-    print "Syntax error in input!", p
+    print("Syntax error in input!", p)
     exit()
 
 
-def print_ast(ast, depth):
+def print_ast(ast, file_handle, depth):
     tabs = '\t' * depth
     for branch in ast:
         if type(branch) == str:
             if 'ID,' in branch:
                 depth -= 1
+            file_handle.write(tabs + branch + '\n')
             print(tabs + branch)
         else:
-            print_ast(branch, depth+1)
+            print_ast(branch, file_handle, depth+1)
 
 if __name__ == '__main__':
     # Build the parser
@@ -91,16 +92,20 @@ if __name__ == '__main__':
     ula_file = sys.argv[-1]
     # Check for argument
     if ula_file == sys.argv[0]:
-        print 'No ula file specified!'
+        print('No ula file specified!')
     else:
         s = '''val = 12
 result = val#(60$2e4)'''
         ula_file = sys.argv[-1]
         # Check for argument
         if ula_file == sys.argv[0]:
-            print 'No ula file specified!'
+            print('No ula file specified!')
         else:
             with open(ula_file) as open_file:
-                parsed_ula = parser.parse(open_file.read())
+                in_data = open_file.read()
+
+            parsed_ula = parser.parse(in_data)
+            with open(ula_file.replace('.ula', '.ast'), 'w') as out_file:
                 print('Start')
-                print_ast(parsed_ula, 1)
+                out_file.write('Start\n')
+                print_ast(parsed_ula, out_file, 1)
